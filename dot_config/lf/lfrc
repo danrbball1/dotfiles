@@ -198,11 +198,11 @@ map ch chmod
 map dd trash
 map e
 map ee editor-open
-map gd cd ~/Documents
+map gc cd ~/.config
+map gdd cd ~/Documents
 map gdl cd ~/Downloads
 map gh cd
 map gp. cd ~/Pictures
-map gc cd ~/.config
 map gtd cd ~/configs
 map gtr cd ~/.local/share/Trash/files
 map gtt cd ~/tech
