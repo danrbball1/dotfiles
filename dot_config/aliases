@@ -1,2 +1,4 @@
 alias c='chezmoi'
 alias lg='lazygit'
+alias mkdir='mkdir -p'
+alias update='sudo pacman -Syu'
