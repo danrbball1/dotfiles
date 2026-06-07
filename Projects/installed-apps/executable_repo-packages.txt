@@ -1,0 +1,7 @@
+lf
+vim
+zsh
+zsh-autosuggestions                 # Fish-like autosuggestiosn for zsh
+zsh-completions                     # Additional completion definitions for zsh
+zsh-history-substring-search        # ZSH port of Fish history search (up error)
+zsh-syntax-highlighting             # Fisk shell like syntax highlighting for zsh
