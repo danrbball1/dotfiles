@@ -1,0 +1,190 @@
+# omarchy
+omarchy-zsh                         # ZSH config
+
+# audio and video
+audacity
+gthumb                              # Image browser and viewer
+handbrake                           # video transcoder
+kdenlive
+vlc
+
+# browsers
+firefox
+vivaldi
+vivaldi-ffmpeg-codecs               # vivaldi codecs (required)
+
+# code editors
+meld                                # compare files, directories, and working copies
+neovim
+wine
+winetricks
+
+# networking
+localsend
+networkmanager                      # connection manager and user applications
+networkmanager-openvpn
+network-manager-applet              # applet for managing network connections
+syncthing                           # open source continous replication
+openvpn
+tailscale
+transmission-gtk
+
+# Office
+libreoffice-fresh
+thunderbird
+
+# terminal applications
+atool                               # manages and gives information about archives
+bat                                 # can highlight code output and display files
+bandwhich 
+bitwarden-cli
+btop                                # is a system monitor written in bash
+broot
+caligula                            # burns iso from command line
+catdoc                              # preview documents
+catimg                              # display picture in terminal
+cmatrix                             # a curses-based scrolling matrix like screen
+coreutils
+cowsay
+direnv
+dua-cli
+curl
+dnsutils
+direnv
+duf                                 # disk usage/free utility
+eza                                 # exa replacement for adding functionality to ls
+fd                                  # search command
+fastfetch
+feh                                 # fast and light image viewer
+ffmpeg                              # can record and splice video and audio on the command line
+figlet                              # terminal font pictures
+findutils
+fish
+fzf                                 # is a fuzzy finder tool
+# gimp                              # image editor (currently using flatpak version)
+git                                 # fast distributed version control system
+glow                                # shows markdown text in terminal
+grep
+htop                                # interactive process viewer
+psmisc                              # Provides killall
+imagemagick                         # image viewing/manipualtion program
+jq                                  # parses json files
+lf
+lshw
+man-db                              # lets you read man pages of programs
+mediainfo                           # shows audio and video information
+moreutils                           # collection of useful unix tools
+mpc                                 # terminal interface for mpd
+mpd                                 # lightweight music daemon
+mpv                                 # video player
+ncdu                                # disk usage analyzer with ncurses interface
+neovim                              # vim with some useful features
+ncmpcpp                             # ncurses interface for music with multiple formats and a powerful tag editor.
+newsboat                            
+nmap
+nnn                                 # file manager
+pandoc                              # converts files between different formats
+playerctl                           # mpris media player controller an dlib for spotify, vlc, and others
+progress
+ranger
+restic                              # backups made simple
+ripgrep
+rclone
+rsync                               # syncing and backup system
+rsnapshot
+speedtest-cli
+starship                            # cross-shell prompt
+stow
+sudo
+superfile
+tldr                                # collection of simplifed and commuity-driven man pages
+tmux                                # terminal multiplexer
+traceroute
+trash-cli                           # terminal trash ca
+unrar                               # extracts rar's
+unzip                               # unzips zips
+vim
+variety                             # wallpaper switcher
+yazi
+yt-dlp                              # can download any YouTube video (or playlist or channel) when given the link
+zathura                             # pdf viewer with vim-like bindings
+zathura-pdf-mupdf                   # allows mupdf pdf compatibility in zathura
+zsh
+zsh-autocomplete
+zsh-autosuggestions                 # Fish-like autosuggestiosn for zsh
+zsh-completions                     # Additional completion definitions for zsh
+zsh-history-substring-search        # ZSH port of Fish history search (up error)
+zsh-syntax-highlighting             # Fisk shell like syntax highlighting for zsh
+which
+wget
+
+# virtualization
+distrobox                           # virtualization softwar
+docker
+docker-compose
+flatpak                             # runs containerized applications
+libvirt                             # API for controlling virtualization enginges
+virt-manager                        # graphically manage KVM, Xen, or LXC via libvirt
+virt-viewer                         # launch virtual machine
+v4l-utils
+
+# file manager
+atool
+chafa
+colordiff
+exiftool
+ffmpegthumbnailer
+lynx
+pcmanfm
+ntfs-3g                             # allows accessing NTFS partitions.
+perl-file-mimeinfo                  # displays mime info for di ffernt file types
+poppler                             # manipulates .pdfs and gives .pdf previews and other .pdf functions.
+thunar                              # moder file manager for XFCE4
+thunar-volman
+thunar-archive-plugin               # unzips software from thunar
+udiskie                             # removable disk automount using udisk
+udisks2
+
+# applications
+alacritty                           # GPU enhanced CLI
+clamav
+clamtk
+deja-dup
+filezilla
+flameshot                           # font management application
+kitty                               # GPU based terminal
+okular                              # GUI PDF editor
+rofi                                # window switcher, application launger, and dmenu replacement
+thunderbird                         # an email client
+
+# utilities
+arch-wiki-docs                      # offline version of the AUR
+baobab                              # a disk usage analyzer
+bleachbit                           # cleans files to free disk space
+clonezilla                          # ncurses partition and disk imaging clone
+dunst                               # suckless notification system
+fwupd                               # firmware update manager
+gparted                             # parition magic clone
+maim                                # can take quick screenshots at your request
+parted
+pamixer                             # command-line audio interface
+solaar                              # linux device manager for Logitech devices
+ufw                                 # uncomplicated firewall
+yad
+zathura
+
+# Fonts
+font-manager
+awesome-terminal-fonts
+# nerd-fonts-source-code-pro          # Source Code Pro Fonts
+noto-fonts                          # google noto TTF fonts
+noto-fonts-emoji                    # emoji font
+ttf-dejavu
+ttf-droid                           # fonts released as part of Android"
+ttf-font-awesome
+ttf-hack
+ttf-jetbrains-mono                  # typeface for developers, by JetBrains
+ttf-linux-libertine                 # provides the sans and serif fonts for LARBS.
+ttf-roboto                          # google's signature family of fonts
+ttf-roboto-mono                     # monospaced addition to the Roboto type family
+ttf-ubuntu-font-family              # Ubuntu font family

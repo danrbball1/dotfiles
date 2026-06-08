@@ -3,8 +3,8 @@
 set -euo pipefail
 
 LOGFILE="install.log"
-REPO_PKGS="repo-packages.txt"
-AUR_PKGS="aur-packages.txt"
+REPO_PKGS="packages.txt"
+AUR_PKGS="aur.txt"
 DRYRUN=false
 VERBOSE=false
 

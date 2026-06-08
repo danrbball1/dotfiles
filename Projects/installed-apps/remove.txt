@@ -7,3 +7,6 @@ cups
 signal-desktop
 snapper
 spotify
+
+
+typora
