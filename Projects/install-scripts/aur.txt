@@ -1,7 +1,6 @@
 brave-bin
 brave-origin-nightly-bin            # Browser
 cptv-git                            # 
-czkawka-gui                         #
 dmscripts-git                       # distrotube dmenu scripts
 fpp                                 #
 gallary-dl                          #
@@ -10,7 +9,6 @@ hyprcaffeine
 lazydocker                          # tui docker application
 lazygit                             # git tui program
 lf                                  # is an extensive terminal file manager that everyone likes
-losslesscut-bin
 makemkv                             # new added
 mintstick-git
 nerd-fonts-sf-mono
@@ -19,9 +17,15 @@ nsxiv                               # image viewer
 pacfinder                           # dependcy tree visualizer
 ttf-ms-fonts                        # microsoft fonts
 
-
+# ###################
 # Disabled
+# ###################
+# nerd-fonts-apple
+# wezterm
+# zed-git
 
-#nerd-fonts-apple
-# wezterm                             #
-#zed-git                            #
+# ################################
+# currently installed via flathub
+# ################################
+# czkawka-gui                         #
+# losslesscut-bin
