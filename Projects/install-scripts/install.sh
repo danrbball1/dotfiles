@@ -4,7 +4,7 @@ set -euo pipefail
 
 LOGFILE="install.log"
 REPO_PKGS="packages.txt"
-AUR_PKGS="aur.txt"
+AUR_PKGS="aur_pacakges.txt"
 DRYRUN=false
 VERBOSE=false
 
