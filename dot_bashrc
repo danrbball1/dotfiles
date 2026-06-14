@@ -15,6 +15,7 @@
 # All the default Omarchy aliases and functions
 # (don't mess with these directly, just overwrite them here!)
 source ~/.local/share/omarchy/default/bash/rc
+source ~/.config/scripts
 
 # Load shared shell configuration (bash fallback when zsh is unavailable)
 #[[ -f /usr/share/omarchy-zsh/shell/all ]] && source /usr/share/omarchy-zsh/shell/all

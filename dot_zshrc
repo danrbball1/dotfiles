@@ -15,5 +15,6 @@
 
 # Load shared shell configuration (aliases, functions, environment, tool init)
 [[ -f $HOME/.config/aliases ]] && source $HOME/.config/aliases
+[[ -f $HOME/.config/scripts]] && source $HOME/.config/scripts
 
 eval "$(starship init zsh)"

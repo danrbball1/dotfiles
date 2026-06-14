@@ -25,8 +25,8 @@ ttf-ms-fonts                        # microsoft fonts
 # ###################
 # Disabled
 # ###################
-# czkawka-gui                         # Duplicate file finder
-# losslesscut-bin                     # Video splitter
+# czkawka-gui                        # Duplicate file finder
+# losslesscut-bin                    # Video splitter
 # nerd-fonts-apple
 # wezterm
 # zed-git
@@ -34,10 +34,9 @@ ttf-ms-fonts                        # microsoft fonts
 # ################################
 # currently installed via flathub
 # ################################
-# czkawka-gui                         #
+# czkawka-gui
 # losslesscut-bin
-=======
 # Disabled
 # nerd-fonts-apple
-# wezterm                             #
-# zed-git                            #
+# wezterm
+# zed-git
