@@ -1,5 +1,7 @@
 app.zen_browser.zen
 com.github.jeromerobert.pdfarranger
+io.github.dvlv.boxbuddyrs
+io.github.maniacx.BudsLink
 com.github.qarmin.czkawka
 com.github.tchx84.Flatseal
 com.obsproject.Studio
@@ -25,4 +27,3 @@ org.mixxx.Mixxx
 org.onlyoffice.desktopeditors
 org.pulseaudio.pavucontrol
 org.remmina.Remmina
-io.github.maniacx.BudsLink
