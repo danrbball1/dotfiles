@@ -132,6 +132,7 @@ v4l-utils
 atool
 chafa
 colordiff
+copyparty
 exiftool
 ffmpegthumbnailer
 lynx

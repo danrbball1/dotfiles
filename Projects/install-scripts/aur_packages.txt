@@ -1,10 +1,9 @@
 # Standard AUR Packages
-brave-bin
-brave-origin-nightly-bin            # Brave browser without unneeded information
-cptv-git                            # 
+brave-bin                           # Web browser that blocks ads and tracker by default
+brave-origin-bin                    # The minimalist browser from the makers of Brave (
 dmscripts-git                       # distrotube dmenu scripts
-fpp                                 #
-gallary-dl                          # Wallpaper downloader software
+fpp                                 # TUI that lets you pick paths out of its stdin and run arbitrary commands on them
+gallery-dl                          # Command-line program to download image-galleries and collections from several image hosting sites 
 hollywood                           # tmux program launcher
 hyprcaffeine
 lazydocker                          # tui docker application
@@ -17,17 +16,20 @@ lf                                  # terminal file manager
 makemkv                             # DVD/Blueray Ripper
 mintstick-git                       # USB image writer
 nerd-fonts-sf-mono                  # San Fransico Nerd Fonts
-nerd-fonts-complete                 # All nerd fonts
 nsxiv                               # image viewer
 pacfinder                           # dependcy tree visualizer
+shelly-bin                          # A modern Arch package manager
 ttf-ms-fonts                        # microsoft fonts
 
 # ###################
 # Disabled
 # ###################
+
+# cptv-git                            # 
 # czkawka-gui                        # Duplicate file finder
 # losslesscut-bin                    # Video splitter
 # nerd-fonts-apple
+# nerd-fonts-complete                 # All nerd fonts
 # wezterm
 # zed-git
 
