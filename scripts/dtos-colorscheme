@@ -1,0 +1,309 @@
+#!/usr/bin/env bash
+#
+# Script name: dtos-colorscheme
+# Description: Change colorscheme in DTOS.
+# Dependencies: dmenu, dmscripts
+# GitLab: https://www.gitlab.com/dwt1/dtos
+# License: https://www.gitlab.com/dwt1/dtos/LICENSE
+# Contributors: Derek Taylor
+
+# Set with the flags "-e", "-u","-o pipefail" cause the script to fail
+# if certain things happen, which is a good thing.  Otherwise, we can
+# get hidden bugs that are hard to discover.
+set -euo pipefail
+
+# shellcheck disable=SC1091
+source "$HOME/.config/dmscripts/config"
+
+options=("doom-one"
+         "dracula"
+         "gruvbox-dark"
+         "monokai-pro"
+         "nord"
+         "oceanic-next"
+         "palenight"
+         "solarized-dark"
+         "solarized-light"
+         "tomorrow-night"
+         "Quit this program")
+
+main() {
+
+    choice=$(printf '%s\n' "${options[@]}" | ${MENU} 'Choose color scheme:' "${@}")
+
+    case "$choice" in
+    'doom-one')
+
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/doom_one.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.DoomOne/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.DoomOne/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh  || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-one t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-one t)" || echo "Emacsclient not running."
+
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+    'dracula')
+
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/dracula.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.Dracula/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.Dracula/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-dracula t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-dracula t)" || echo "Emacsclient not running."
+
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+     'gruvbox-dark')
+
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/gruvbox_dark.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.GruvboxDark/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.GruvboxDark/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-gruvbox t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-gruvbox t)" || echo "Emacsclient not running."
+
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+    'monokai-pro')
+
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/monokai_pro.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.MonokaiPro/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.MonokaiPro/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-monokai-pro t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-monokai-pro t)" || echo "Emacsclient not running."
+
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+    'nord')
+ 
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/nord.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.Nord/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.Nord/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-nord t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-nord t)" || echo "Emacsclient not running."
+
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+    'oceanic-next')
+
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/oceanic_next.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.OceanicNext/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.OceanicNext/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-oceanic-next t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-oceanic-next t)" || echo "Emacsclient not running."
+
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+    'palenight')
+
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/palenight.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.Palenight/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.Palenight/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-palenight t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-palenight t)" || echo "Emacsclient not running."
+
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+    'solarized-dark')
+
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/solarized_dark.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.SolarizedDark/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.SolarizedDark/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-solarized-dark t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-solarized-dark t)" || echo "Emacsclient not running."
+
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+    'solarized-light')
+
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/solarized_light.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.SolarizedLight/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.SolarizedLight/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-solarized-light t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-solarized-light t)" || echo "Emacsclient not running."
+
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+    'tomorrow-night')
+
+        ## ALACRITTY ##
+        sed -i "s#^import = .*#import = [\"~/.config/alacritty/themes/themes/tomorrow_night.toml\"]#" "$HOME"/.config/alacritty/alacritty.toml || echo "Error setting Alacritty colors"
+
+        ## QTILE ##
+        sed -i "s/^colors = colors.*/colors = colors.TomorrowNight/g" "$HOME"/.config/qtile/config.py || echo "Cannot find colors = colors."
+        sed -i "s/^colors=colors.*/colors = colors.TomorrowNight/g" "$HOME"/.config/qtile/config.py  || echo "Cannot find colors=colors."
+        sed -i "s/^COLORSCHEME=.*/COLORSCHEME=$choice/g" "$HOME"/.config/qtile/autostart.sh || echo "Cannot find COLORSCHEME."
+        qtile cmd-obj -o cmd -f restart && $HOME/.config/qtile/autostart.sh || echo "Qtile not running"
+
+        ## CONKY ##
+        sed -i "s#^myConky=.*#myConky=\"$HOME/.config/conky/qtile/01/$choice.conf\"#" "$HOME"/.local/bin/conky-toggle  || echo "Cannot change conky-toggle script."
+        killall conky && conky -c $HOME/.config/conky/qtile/01/$choice.conf &
+
+        ## EMACS ##
+        sed -i "s/load-theme '.*/load-theme 'doom-tomorrow-night t)/g" "$HOME"/.config/emacs/config.org || echo "Cannot find config.org."
+        emacsclient -e "(load-theme 'doom-tomorrow-night t)" || echo "Emacsclient not running."
+ 
+        ## DUNST ##
+        killall dunst
+        dunst -conf "$HOME"/.config/dunst/"$choice"
+
+        ;;
+    'Quit this program')
+        echo "Program terminated." && exit 0
+        ;;
+    *)
+        exit 0
+        ;;
+    esac
+}
+
+no_opt=1
+# If script is run with '-d', it will use 'dmenu'
+# If script is run with '-f', it will use 'fzf'
+# If script is run with '-d', it will use 'rofi'
+while getopts "dfrh" arg 2>/dev/null; do
+    case "${arg}" in
+    d) # shellcheck disable=SC2153
+        MENU=${DMENU}
+        [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main
+        ;;
+    f) # shellcheck disable=SC2153
+        MENU=${FMENU}
+        [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main
+        ;;
+    r) # shellcheck disable=SC2153
+        MENU=${RMENU}
+        [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main
+        ;;
+    h) help ;;
+    *) printf '%s\n' "Error: invalid option" "Type $(basename "$0") -h for help" ;;
+    esac
+    no_opt=0
+done
+
+# If script is run with NO argument, it will use 'dmenu'
+[ $no_opt = 1 ] && MENU=${DMENU} && [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"

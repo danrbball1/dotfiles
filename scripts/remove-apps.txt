@@ -1,0 +1,9 @@
+1password-beta
+1password-cli
+basecamp
+chatgpt
+discord
+figma
+hey
+spotify
+
