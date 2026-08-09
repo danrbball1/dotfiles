@@ -2,25 +2,25 @@
 omarchy-zsh                         # ZSH config
 
 # audio and video
-audacity
+audacity                            # Program that lets you manipulate digital audio waveforms
 gthumb                              # Image browser and viewer
 handbrake                           # video transcoder
-kdenlive
-vlc
+kdenlive                            # Non-linear video editor
+vlc                                 # Cross-platform multipmedia player and framework
 
 # browsers
-firefox
-vivaldi
+firefox                             # Fastk, private & safe web browser 
+vivaldi                             # Advanced browser made with the power user in mind
 vivaldi-ffmpeg-codecs               # vivaldi codecs (required)
 
 # code editors
 meld                                # compare files, directories, and working copies
-neovim
+neovim                              # Vim for aiming to improve user experience, plugins, and GUIs
 wine
 winetricks
 
 # networking
-localsend
+localsend                           # Cross-plaform alternative to Airdrop
 networkmanager                      # connection manager and user applications
 networkmanager-openvpn
 network-manager-applet              # applet for managing network connections
@@ -69,6 +69,8 @@ htop                                # interactive process viewer
 psmisc                              # Provides killall
 imagemagick                         # image viewing/manipualtion program
 jq                                  # parses json files
+lazydocker                          # tui docker application
+lazygit                             # git tui program
 lf
 lshw
 man-db                              # lets you read man pages of programs
@@ -83,6 +85,7 @@ ncmpcpp                             # ncurses interface for music with multiple 
 newsboat                            
 nmap
 nnn                                 # file manager
+nsxiv
 pandoc                              # converts files between different formats
 playerctl                           # mpris media player controller an dlib for spotify, vlc, and others
 progress

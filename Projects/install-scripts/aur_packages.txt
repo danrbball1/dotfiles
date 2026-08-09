@@ -1,25 +1,11 @@
 # Standard AUR Packages
 brave-bin                           # Web browser that blocks ads and tracker by default
 brave-origin-bin                    # The minimalist browser from the makers of Brave (
-dmscripts-git                       # distrotube dmenu scripts
-fpp                                 # TUI that lets you pick paths out of its stdin and run arbitrary commands on them
 gallery-dl                          # Command-line program to download image-galleries and collections from several image hosting sites 
-hollywood                           # tmux program launcher
-hyprcaffeine
-lazydocker                          # tui docker application
-lazygit                             # git tui program
-lf                                  # is an extensive terminal file manager that everyone likes
-makemkv                             # new added
-mintstick-git
-nerd-fonts-sf-mono
-lf                                  # terminal file manager 
 makemkv                             # DVD/Blueray Ripper
 mintstick-git                       # USB image writer
-nerd-fonts-sf-mono                  # San Fransico Nerd Fonts
-nsxiv                               # image viewer
 pacfinder                           # dependcy tree visualizer
 shelly-bin                          # A modern Arch package manager
-ttf-ms-fonts                        # microsoft fonts
 
 # ###################
 # Disabled
@@ -27,18 +13,14 @@ ttf-ms-fonts                        # microsoft fonts
 
 # cptv-git                            # 
 # czkawka-gui                        # Duplicate file finder
+# dmscripts-git                       # distrotube dmenu scripts
+# fpp                                 # TUI that lets you pick paths out of its stdin and run arbitrary commands on them
+#hollywood                           # tmux program launcher
+#hyprcaffeine
 # losslesscut-bin                    # Video splitter
+# nerd-fonts-sf-mono
 # nerd-fonts-apple
 # nerd-fonts-complete                 # All nerd fonts
-# wezterm
-# zed-git
-
-# ################################
-# currently installed via flathub
-# ################################
-# czkawka-gui
-# losslesscut-bin
-# Disabled
-# nerd-fonts-apple
+# ttf-ms-fonts                        # microsoft fonts
 # wezterm
 # zed-git

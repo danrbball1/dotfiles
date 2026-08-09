@@ -20,4 +20,9 @@
   <test display="none" id="comment::note" op="none"/>
   <test display="none" id="comment::place" op="none"/>
   <test display="none" id="comment::category" op="none"/>
+  <filter id="q5tXv0gr" name="png">
+    <tests match="all">
+      <test id="file::name" op="contains" value="png"/>
+    </tests>
+  </filter>
 </filters>
