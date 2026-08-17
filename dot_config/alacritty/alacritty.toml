@@ -1,4 +1,4 @@
-general.import = [ "~/.config/omarchy/current/theme/alacritty.toml" ]
+general.import = [ "~/.local/state/omarchy/current/theme/alacritty.toml" ]
 
 [env]
 TERM = "xterm-256color"
@@ -8,10 +8,10 @@ TERM = "xterm-256color"
 osc52 = "CopyPaste"
 
 [font]
-normal = { family = "JetBrains Mono" }
-bold = { family = "JetBrains Mono" }
-italic = { family = "JetBrains Mono" }
-size = 13
+normal = { family = "SFMono Nerd Font Mono" }
+bold = { family = "SFMono Nerd Font Mono" }
+italic = { family = "SFMono Nerd Font Mono" }
+size = 12 
 
 [window]
 padding.x = 14

@@ -1,10 +1,10 @@
+set shellopts '-ic'
 set autoquit
 set drawbox
 set hidden
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set icons
-set ifs "
-"
+set ifs ""
 set ignorecase
 set nohidden
 set nonumber
@@ -12,8 +12,7 @@ set period 1
 set preview
 set ratios "1:1:2"
 set scrolloff 10
-set shell "zsh"
-set shellopts "-eu"
+#set shell "zsh"
 set tabstop 4
 
 cmd broot_jump ${{
@@ -63,7 +62,8 @@ cmd chmod ${{
 
 cmd clear_trash ${{%trash-empty}}
 
-cmd editor-open $$EDITOR $f
+cmd editor-open $$EDITOR "$f"
+# cmd editor-open nvim "$f"
 cmd extract ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f

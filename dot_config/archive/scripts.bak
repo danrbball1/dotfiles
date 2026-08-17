@@ -1,0 +1,181 @@
+## FUNCTIONS
+
+# #####################
+# move up one directory
+# #####################
+
+up () {
+  local d=""
+  local limit="$1"
+
+  # Default to limit of 1
+  if [[ ! "$limit" =~ ^[0-9]+$ ]] || (( limit <= 0 )); then
+      limit=1
+  fi
+
+  for ((i=1;i<=limit;i++)); do
+    d="../$d"
+  done
+
+  # perform cd. Show error if cd fails
+  if ! cd "$d"; then
+    echo "Couldn't go up $limit dirs.";
+  fi
+}
+
+# make directory and then move to it
+mkcd() {
+  if [ $# != 1 ]; then
+    echo "Usage: mkcd <dir>"
+  else
+    mkdir -p "$1" && cd "$1"
+  fi
+}
+
+################################################
+### Function extract for common file formats ###
+################################################
+
+function extract {
+ if [ -z "$1" ]; then
+    # display usage if no parameters given
+    echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
+    echo "       extract <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
+ else
+    for n in "$@"
+    do
+      if [ -f "$n" ] ; then
+          case "${n%,}" in # removed '' before $
+            *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
+                         tar xvf "$n"       ;;
+            *.lzma)      unlzma ./"$n"      ;;
+            *.bz2)       bunzip2 ./"$n"     ;;
+            *.cbr|*.rar)       unrar x -ad ./"$n" ;;
+            *.gz)        gunzip ./"$n"      ;;
+            *.cbz|*.epub|*.zip)       unzip ./"$n"       ;;
+            *.z)         uncompress ./"$n"  ;;
+            *.7z|*.arj|*.cab|*.cb7|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.pkg|*.rpm|*.udf|*.wim|*.xar)
+                         7z x ./"$n"        ;;
+            *.xz)        unxz ./"$n"        ;;
+            *.exe)       cabextract ./"$n"  ;;
+            *.cpio)      cpio -id < ./"$n"  ;;
+            *.cba|*.ace)      unace x ./"$n"      ;;
+            *)
+                         echo "extract: '$n' - unknown archive method"
+                         return 1
+                         ;;
+          esac
+      else
+          echo "'$n' - file does not exist"
+          return 1
+      fi
+    done
+fi
+}
+
+################################
+# move folder then list contents
+################################
+
+cd() {
+    builtin cd "$@" || return
+
+    command -v exa >/dev/null &&
+        command exa -lah --color=always --group-directories-first --icons
+}
+
+
+############################################
+# sudo not required for some system commands
+############################################
+for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
+	alias $command="sudo $command"
+done; unset command
+
+
+rga-fzf() {
+	RG_PREFIX="rga --files-with-matches"
+ local file
+ file="$(
+  FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
+ fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
+--phony -q "$1" \
+--bind "change:reload:$RG_PREFIX {q}" \
+--preview-window="70%:wrap"
+ )" &&
+ echo "opening $file" &&
+	xdg-open "$file"
+}
+
+# Source: https://github.com/lime-desu/dootsfile/blob/33c520432b4fdc8823fb86b206bf0a5682aaf742/config/fzf/widgets/ripgrep-launcher_widget.zsh
+
+_fzf-ripgrep_() {
+    local RG_PREFIX
+    local INITIAL_QUERY
+    local version
+
+    RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case"
+    INITIAL_QUERY="${*:-}"
+
+    version=$(fzf --version | awk 'NR==1{print $1}')
+
+    local fzf_options=(
+        --ansi
+        --color "hl:-1:underline,hl+:-1:underline:reverse"
+        --disabled
+        --query "$INITIAL_QUERY"
+        --bind "change:reload:sleep 0.1 && $RG_PREFIX {q} || true"
+        --prompt '  ripgrep > '
+        --delimiter :
+        --header 'Ctrl-r ripgrep mode | Ctrl-f fzf mode'
+        --preview 'bat --color=always {1} --highlight-line {2}'
+        --preview-window 'nohidden,<60(nohidden,up,60%,border-bottom,+{2}+3/3,~3)'
+    )
+
+    if [[ "$version" < "0.38.0" ]]; then
+        local result selected_file rest selected_line
+
+        result="$(
+            FZF_DEFAULT_COMMAND="$RG_PREFIX" \
+            fzf "${fzf_options[@]}" \
+                --bind "ctrl-f:unbind(change,ctrl-f)+change-prompt(  fzf > )+enable-search+clear-query+rebind(ctrl-r)" \
+                --bind "ctrl-r:unbind(ctrl-r)+change-prompt(  ripgrep > )+disable-search+reload($RG_PREFIX {q} || true)+rebind(change,ctrl-f)"
+        )"
+
+        selected_file="${result%%:*}"
+        rest="${result#*:}"
+        selected_line="${rest%%:*}"
+
+        if [[ -n "$selected_file" ]]; then
+            "${EDITOR:-vim}" "$selected_file" "+$selected_line"
+        fi
+    else
+        local rg_file fzf_file
+
+        rg_file=$(mktemp)
+        fzf_file=$(mktemp)
+
+        trap 'rm -f "$rg_file" "$fzf_file"' EXIT
+
+        FZF_DEFAULT_COMMAND="$RG_PREFIX" \
+        fzf "${fzf_options[@]}" \
+            --bind "ctrl-f:unbind(change,ctrl-f)+change-prompt(  fzf > )+enable-search+rebind(ctrl-r)+transform-query(echo {q} > $rg_file; cat $fzf_file)" \
+            --bind "ctrl-r:unbind(ctrl-r)+change-prompt(  ripgrep > )+disable-search+reload($RG_PREFIX {q} || true)+rebind(change,ctrl-f)+transform-query(echo {q} > $fzf_file; cat $rg_file)" \
+            --bind "start:unbind(ctrl-r)" \
+            --bind "enter:become(${EDITOR:-vim} {1} +{2})"
+    fi
+}
+
+if [ -n "$BASH_VERSION" ]; then
+    bind -x '"\C-f":"_fzf-ripgrep_"'
+
+elif [ -n "$ZSH_VERSION" ]; then
+    _fzf-ripgrep-widget() {
+        zle -I
+        _fzf-ripgrep_
+        zle redisplay
+    }
+
+    zle -N _fzf-ripgrep-widget
+    bindkey '^F' _fzf-ripgrep-widget
+fi
