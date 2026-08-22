@@ -2,7 +2,6 @@
 brave-bin                           # Web browser that blocks ads and tracker by default
 brave-origin-bin                    # The minimalist browser from the makers of Brave (
 gallery-dl                          # Command-line program to download image-galleries and collections from several image hosting sites 
-makemkv                             # DVD/Blueray Ripper
 mintstick-git                       # USB image writer
 pacfinder                           # dependcy tree visualizer
 shelly-bin                          # A modern Arch package manager
@@ -15,8 +14,9 @@ shelly-bin                          # A modern Arch package manager
 # czkawka-gui                        # Duplicate file finder
 # dmscripts-git                       # distrotube dmenu scripts
 # fpp                                 # TUI that lets you pick paths out of its stdin and run arbitrary commands on them
-#hollywood                           # tmux program launcher
-#hyprcaffeine
+# hollywood                           # tmux program launcher
+# hyprcaffeine
+# makemkv                             # DVD/Blueray Ripper
 # losslesscut-bin                    # Video splitter
 # nerd-fonts-sf-mono
 # nerd-fonts-apple

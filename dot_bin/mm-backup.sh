@@ -1,43 +1,565 @@
 #!/bin/bash
 
-# === CONFIGURATION ===
-# Directories to back up (space-separated).  If you want to add folder, not commas are needed
-SOURCE_DIRS=("/home/daniel/MagicMirror" )
+# backup MM modules  config
+# Source: https://github.com/sdetweil/MagicMirror-backup-restore/
 
-# Destination directory for backups
-BACKUP_DIR="/home/daniel/backup"
 
-# Compression method: gzip, bzip2, xz, or none
-COMPRESSION="gzip"
+base=$HOME/MagicMirror
+saveDir=$HOME/MM_backup
+default_user=temp
+user_name=$default_user
+email=$user_name@somemail.com
+default_email=$email
+logpath=$base/installers
+logfile=$logpath/backup.log
+#  list css to backup find . -maxdepth 1 -type f \( -not -name "font-awesome.css" -not -name "main.css" -not -name "roboto.css" \)
+#
+#  add support for backup css files in config folder
+#
+push=false
 
-# Log file
-LOG_FILE="$BACKUP_DIR/backup.log"
+# is this a mac
+mac=$(uname -s)
 
-# === SCRIPT START ===
-# Create backup filename with timestamp
-TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-ARCHIVE_NAME="backup_$TIMESTAMP.tar"
-
-# Set compression flags
-case "$COMPRESSION" in
-  gzip)   ARCHIVE_NAME+=".gz"; COMPRESS_FLAG="z" ;;
-  bzip2)  ARCHIVE_NAME+=".bz2"; COMPRESS_FLAG="j" ;;
-  xz)     ARCHIVE_NAME+=".xz"; COMPRESS_FLAG="J" ;;
-  none)   COMPRESS_FLAG="" ;;
-  *)      echo "Invalid compression method: $COMPRESSION"; exit 1 ;;
-esac
-
-# Ensure backup directory exists
-mkdir -p "$BACKUP_DIR"
-
-# Run tar command
-echo "[$(date)] Starting backup..." >> "$LOG_FILE"
-tar -c${COMPRESS_FLAG}f "$BACKUP_DIR/$ARCHIVE_NAME" "${SOURCE_DIRS[@]}" >> "$LOG_FILE" 2>&1
-
-# Check result
-if [ $? -eq 0 ]; then
-  echo "[$(date)] Backup successful: $ARCHIVE_NAME" >> "$LOG_FILE"
+if [ $mac == 'Darwin' ]; then
+	cmd=greadlink
 else
-  echo "[$(date)] Backup failed!" >> "$LOG_FILE"
+	cmd=readlink
+fi
+msg_prefix='updating'
+#script_dir=$(dirname $($cmd -f "$0"))
+
+#OPTIND=1 # Reset if getopts used previously
+remote=
+next_tagnumber=1
+
+beginswith() {
+  l=$(expr length "$2")
+  leading="${1:0:$l}"
+	case $2 in
+		$leading):
+			true
+			;;
+		*):
+		  false
+		  ;;
+	esac
+
+}
+
+check_for_push(){
+	if [ $push == true ]; then
+		if [ "$repo." == "." ]; then
+			# repo not connected to git
+				if [ "$reponame." == "." ]; then
+					echo to push, we need the repo name | tee -a $logfile
+					echo see the help for the -r parm
+					exit 2
+				else
+					if [ "$user_name" != $default_user ]; then
+						cd $saveDir
+						echo adding the git repmote https://github.com/$user_name/$reponame.git | tee -a $logfile
+						git remote add origin https://github.com/$user_name/$reponame.git
+						cd -
+					else
+						echo "you requested to push the local backup repository to github, but didn't specify the username" | tee -a $logfile
+						exit 3
+					fi
+				fi
+		else
+			if [ "$(cd $saveDir && git config user.email)." == "." -a "$user_name" == $default_user ]; then
+				echo  we will need the github userid | tee -a $logfile
+				echo see the help for the -u parm
+				exit 3
+			else
+				if [ "$(cd $saveDir && git config user.email)." == "." -a "$email." == $default_email ]; then
+					echo   we will need the github user email | tee -a $logfile
+					echo see the help for the -e parm
+					exit 4
+				fi
+			fi
+		fi
+	else
+		# if not push, but repo specified
+		if [ "$repo." != "." ]; then
+			echo "you specified a github repository name , but didn't request push" | tee -a $logfile
+			read -p "do you want to save the results of this backup to github now? (Y/n)?" choice
+			choice="${choice:-Y}"
+			choice=${choice,,}
+			echo user selection for push now is $choice >>$logfile
+			if [ $choice == "y" ]; then
+				push=true
+				check_for_push
+			fi
+		fi
+	fi
+
+}
+
+process_args(){
+local OPTIND
+
+#r=${1:0:1}
+#echo "$r='$r'"
+#if [ "$r." != '-.' ]; then
+#echo "Illegal option '$1'"
+	#exit 3
+#fi
+while getopts ":hs:b:m:r:u:e:p" opt
+do
+    case $opt in
+    	# help
+
+	   	 h)	echo
+			echo $0 takes optional parameters
+			echo
+			echo -e "\t -s MagicMirror_dir"
+			echo -e	"\t\tdefault $base"
+			echo
+			echo -e "\t -b backup_dir "
+			echo -e	"\t\tdefault $saveDir"
+			echo
+			echo -e "\t -m backup message "
+			echo -e	"\t\t any message (in quotes) that you would like to attach to this change for later info"
+			echo -e	"\t\tdefault none"
+			echo
+			echo -e "\t -p auto push to github (will need repo name, username,  user password or token"
+			echo -e "\t    the password/token will be prompted for by git"
+                        echo -e "\t    unless you set it in the -b backup folder git with git config"
+			echo -e	"\t\tdefault no push"
+			echo
+			echo -e "\t -r github repository name (reponame)"
+			echo -e	"\t\ttypically https://github.com/username/reponame.git"
+			echo -e	"\t\tdefault output of git remote -v (if set)"
+			echo -e "\t\t -r overrides the git remote setting"
+			echo
+			echo -e "\t -u github username"
+			echo -e "\t    the username will be extracted from the -r parm if the full url is used"
+			echo -e	"\t\tdefault none"
+			echo			
+			exit 1
+	 	;;
+    		s)
+		# source MagicMirror folder
+      			b=$(echo $OPTARG | xargs)
+			if [ -d $HOME/$b ]; then
+				base=$HOME/$b
+			else
+				if [ -d $b ]; then
+					base=$b                                        
+				else
+					
+					echo unable to find Source folder $OPTARG | tee -a $logfile
+					exit 2
+				fi
+			fi
+			if [ ! -d $base/installers ]; then 
+                          mkdir $base/installers
+                        fi
+			logfile=$base/installers/backup.log
+			echo source MagicMirror folder is $base | tee -a $logfile
+    		;;
+    		b)
+		# backup folder
+		  full_path=false
+		  b=$(echo $OPTARG | xargs)
+		  if [ "$b." != "." ]; then
+			  if beginswith "$b" "/"; then
+			  	full_path=true
+			  fi
+				if [ -d $HOME/$b -a $full_path == false ]; then
+					saveDir=$HOME/$b
+				else
+					echo checking for backup folder $b | tee -a $logfile
+					if [ -d $b ]; then
+						echo backup folder $b exists | tee -a $logfile
+						saveDir=$b
+					else
+						if [ $full_path == false ]; then
+							echo folder doesn\'t exist, creating backup folder $HOME/$b | tee -a $logfile
+		 					saveDir=$HOME/$b
+		 				else
+		 					echo folder doesn\'t exist, creating backup folder $b | tee -a $logfile
+		 					saveDir=$b
+		 				fi
+					fi
+				fi
+				echo backup folder is $saveDir | tee -a $logfile
+			else
+				echo no folder was specified for backup | tee -a $logfile
+				exit 4
+			fi
+    		;;
+   		m)
+			# message on the git tag
+			msg=""
+			mparm=${@:$OPTIND}
+			if [[ ${mparm:0:1} != "-" ]];then
+	        		msg=$(echo ${@:$OPTIND}| cut -d' ' -f1)
+	        		OPTIND=$((OPTIND+1))
+			fi
+    		;;
+    		r)
+			# github repo name or url
+			repo=$OPTARG
+			# check for fulll url specified, we only want the name
+			IFS='/'; repoIN=($OPTARG); unset IFS;
+			# if there were slashes
+			if [ ${#repoIN[@]} -gt 1 ]; then
+				# get the last element of split array
+				index=${#repoIN[@]}
+				# get the  name
+				repot=${repoIN[$((index -1))]}
+				# user is one array element earlier
+				# get the user name from the URL
+				useru=${repoIN[$(($index-2))]}
+				# check for '.git'
+				IFS='.'; repoN=($repot); unset IFS;
+				# get just the name
+				reponame=${repoN[0]}
+
+				# if we already processed the -u parm
+				if [ $user_name != $default_user ]; then
+					# and the url username is not the same
+					if [ $useru != $user_name ]; then
+						echo "username specified with -u $user_name doesn't match the user in the github repo $useru, aborting" | tee -a $logfile
+						exit 6
+					fi
+				else
+					# no -u parm, taken from repo url
+					user_name=$useru
+				fi
+			else
+				repo_name=$(echo $repo | tr -d [[:blank:]])
+			fi
+		;;
+    	p)
+			# push requested
+			push=true
+			# ignore the repo name , get the one from the save folder, if the folder exists and remote is set
+			if [ -d $saveDir ]; then
+				configured_repo=$(cd $saveDir 2>/dev/null && git remote -v 2>/dev/null| grep fetch -m1 | awk '{print $2}')
+				if [ "$configured_repo." != "." ]; then
+					repo=$configured_repo
+					reponame=$repo
+				fi
+			fi
+		;;
+		u)
+			# username
+			#echo username=$OPTARG
+			user_name=$(echo $OPTARG | tr -d [:blank:])
+		;;
+		e)
+			# email
+			email=$OPTARG
+		;;
+		    \?) echo "Illegal option '-$OPTARG'"  && exit 3
+	 ;;
+    esac
+done
+ shift $((OPTIND-1))
+}
+
+# if this script was started directly then arg0 is 'mm_backup.sh', else it is the first argument provided (oops) 
+if [[ "$0" == *.sh ]]; then 
+  process_args "$@"
+else
+  if [ $# -ge 1 ]; then 
+  	process_args "$0 $@"
+  else
+    process_args "$0"
+  fi
 fi
 
+if [ ! -d $logpath ]; then
+   mkdir $logpath
+fi 
+
+date +"backup starting  - %a %b %e %H:%M:%S %Z %Y" >>$logfile
+
+if [ ! -d $saveDir ]; then
+	echo creating $saveDir | tee -a $logfile
+	mkdir $saveDir 2>./make_error
+	if [ $? -eq 0 ]; then
+		cd $saveDir
+		git init &>/dev/null
+		git symbolic-ref HEAD refs/heads/main
+		cd - >/dev/null
+		msg_prefix='creating'
+	else
+		echo unable to create $saveDir $(cat ./make_error)
+		rm ./make_error
+		exit 1
+	fi
+else
+	if [ ! -d $saveDir/.git ]; then
+		echo using $savedir | tee -a $logfile
+		cd $saveDir
+		echo "creating local git repo" | tee -a $logfile
+		# create local repo
+		git init &>/dev/null
+		git symbolic-ref HEAD refs/heads/main
+		cd - >/dev/null
+	fi
+fi
+check_for_push
+
+cd $saveDir 2>/dev/null
+current_branch=$(git branch | grep '^*' | awk '{print $2}')
+if [ '$current_branch.' != 'main.' ]; then
+   git checkout main >/dev/null 2>1
+   git branch -D $current_branch >/dev/null 2>&1
+fi
+cd - >/dev/null
+
+repo_list=$saveDir/module_list
+
+echo $msg_prefix folder $saveDir | tee -a $logfile
+
+#copy config.js
+if [ -d $base/defaultmodules ]; then
+	mkdir $saveDir/config 2>/dev/null
+	# if files that were separate exist
+	# move them to the config folder
+	mv $saveDir/config.js $saveDir/config 2>/dev/null
+	mv $saveDir/config.env $saveDir/config 2>/dev/null
+	mv $saveDir/config.js.template $saveDir/config/config.js 2>/dev/null
+        mv $saveDir/custom.css $saveDir/config 2>/dev/null
+        find $base/config  -maxdepth 1 -type f \( -not -name "font-awesome.css" -not -name "main.css" -not -name "roboto.css" -not -name config.js.sample -not -name custom.css.sample \) | xargs -I {} cp -p {} $saveDir/config 
+else
+	cp -p $base/config/config.js $saveDir
+	# copy the config template files if they exist
+	cp -p $base/config/config.js.template $saveDir 2>/dev/null
+	# the environment file too, might not exist if user using ENV variables instead
+	cp -p $base/config/config.env $saveDir 2>/dev/null
+	# copy custom.css, no error if not found
+	cp -p $base/config/custom.css $saveDir 2>/dev/null
+        cp -p $base/css/custom.css $saveDir 2>/dev/null 
+fi 
+
+SAVEIFS=$IFS   # Save current IFS
+#if [ $mac != 'Darwin' ]; then	
+	IFS=$'\n'
+#else  
+#    IFS=
+#fi 
+# get the installed module list
+# split putput on new lines, not spaces
+modules=($(find $base/modules -maxdepth 1 -type d | grep -v default | xargs -I % echo "%"))
+#xecho $modules 
+
+# if there is a modules list, erase it, creating new
+if [ ${#modules[@]} -gt 0 ]; then
+	if [ -e $repo_list ]; then
+		echo will create new $repo_list | tee -a $logfile
+		rm $repo_list >/dev/null
+		touch $repo_list
+	fi
+
+	# loop thru the modules discovered
+	for module in "${modules[@]}"
+	do
+		# if its not the base modules folder
+		if [ "$module" != "$base/modules" ]; then
+
+			# change to the that module folder
+			cd "$module"
+			   echo Backing up for $module | tee -a $logfile
+				# if it has a git repo, then it was cloned
+				if [ -d ".git" ]; then
+					# get the remote repo url
+				    repo1=$(git remote -v | grep fetch -m1 | awk '{ print $2}')
+				    # just the module name, not the path or extension from the remote url
+				    mname=$(echo $repo1 |awk -F / '{print $NF}'| awk -F. '{print $1}')
+
+				    # local_name is raw folder name
+					  local_name=$(echo $module | awk -F/ '{print $NF}')
+				    # if [[ "$module" == *"$mname"* ]]; then
+					  echo -e "found module $local_name \n\t installed from $repo1" | tee -a $logfile
+					    # save it to the file
+						if [ -d $module ]; then 
+							  # if the names are the same,
+							  if [ $local_name == $mname ]; then
+							  	# no need to change name on clone on restore
+							  	local_name=
+							  fi
+							  # add the repo and local folder name (if not empty)
+					    	echo $repo1 $local_name >>$repo_list
+							cd $module
+							untracked=$(git status --short --ignored | grep  -e '^?' -e '^!' -e '^ M' | awk '{print $NF}' | grep -v package.json | grep -v package-lock.json | grep -v install.log | grep -v node_modules)
+							# untracked=$(git ls-files --other | grep -v / | grep -v package-lock.json | grep -v package.json | grep -v install.log)
+							if [ "$untracked." != "." ]; then
+								echo untracked files for module $module = $untracked >> $logfile
+								# if the folder doesn't exist
+								if [ ! -d $saveDir/$mname ]; then
+									# create it.
+									mkdir $saveDir/$mname 2>/dev/null
+								fi
+								# copy the untracked(extra)  files to the backup for this module
+								echo other files $untracked
+                  #rsync -aSvuc `echo $untracked` $savedir/$mname
+                  # have to figure out what to do about subfolders on mac, no --parents option
+								if [ $mac == "Darwin" ]; then 
+                   rsync -R --exclude '.git' $untracked $saveDir/$mname
+								else 
+								  	cp -a --parents $untracked $saveDir/$mname
+								fi
+							fi
+        			#    else
+							#echo -e "\e[91m module $repo cloned to unique folder name $mname not backed up \e[90m"
+							# reset the echo ansi code back to default
+							# could save the folder name along with the url
+							# and then clone to the correct folder, rename the modulename.js and use sed to change the register clause too..
+							#tput init 2>/dev/null
+							#echo
+						fi
+						cd - >/dev/null
+					# fi
+				else
+					echo -e "\e[91m module $module was not cloned from github, so no link can be saved, not backed up \e[90m"
+					tput init 2>/dev/null
+				    echo
+				fi
+			# back to the current folder
+			cd - >/dev/null
+		fi
+	done
+	cd $saveDir
+
+
+	gitlist=$(IFS=$'\n' find . -type d -name '.git')
+	for git_folder in ${gitlist[@]}
+	do
+		if [ $git_folder != './.git' ]; then
+			 rm -rf $git_folder >/dev/null 2>/dev/null
+		fi
+	done
+	if [ -e $repo_list ]; then 
+		savefile=temp
+		cat $repo_list | sort -t/ -k5 >$savefile
+		rm $repo_list
+		mv $savefile $repo_list
+	fi 
+	#if [ $mac != 'Darwin' ]; then
+		IFS=$SAVEIFS
+	#fi
+fi
+
+cd $saveDir
+
+
+# check for local info on username  email so commits work
+#  get the git userid , if any
+if [ "$(git config user.email)." == "." ]; then
+	# git info not set
+	if [ "$user_name." == "." ]; then
+		# prompt for users name
+		git config --local user.name $user_name
+	else	
+		git config --local user.name $user_name
+	fi
+	if [ "$email." == "." ]; then
+		# prompt for email address
+		git config --local user.email $email
+	else
+		git config --local user.email $email
+	fi
+#else
+#	echo no  user name or email set, required to save changes to git, please see the -u and -e parameters | tee -a $logfile
+#	exit 3
+fi
+
+# add all the changed files
+git add .
+# commit them to the local repo
+git commit -m "updated on $(date) $msg"
+	# check for any new named tags
+	#last_tag=$(git tag | grep -v origin | sort -nr | head -n1)
+	# last_tag=$(git for-each-ref --sort=creatordate --format '%(refname)'  | grep tags | grep -v - | awk -F/ {'print $3'} | sort -r -g | head -n1)
+	# if we found some then we have the highest number
+	#if [ "$last_tag." != "." ]; then
+  #	next_tagnumber=$((last_tag+1))
+	#fi
+	# lets check  rename any old date named tags
+	if [ $mac != 'Darwin' ]; then
+		SAVEIFS=$IFS   # Save current IFS
+		IFS=$'\n'
+	fi
+	# get the last local tag
+	last_local_tag=$(git tag |  sort -nr | head -n1)
+	# get the last remote tag
+	remote_tag=$(git ls-remote --tags origin 2>/dev/null  | grep -v "{}" | tr '/' ' ' | sort -k 4nr | head -n1 | awk '{print $NF}')
+	# if they are not equal
+	if [ "$last_local_tag" != "$remote_tag" ]; then
+		# tags are not equal, host wins
+		# is remote not set
+		if [ "$remote_tag." != "."  ]; then
+			# if local tag is greater than remote
+			# local backed up, but not pushed
+			if [ "$last_local_tag" -gt "$remote_tag" ]; then
+				# use it
+				next_tagnumber=$last_local_tag
+			else
+				# use remote
+				next_tagnumber=$remote_tag
+			fi 
+		else
+			# if local not set
+			if [ "$last_local_tag." != "." ]; then
+					next_tagnumber=$last_local_tag
+			else
+					next_tagnumber=0
+			fi
+		fi			
+	else 	
+	  # tags equal use local number
+	  next_tagnumber=$last_local_tag
+	fi
+	# increment to next
+	next_tagnumber=$((next_tagnumber+1))
+
+# set the tag use the message
+git tag -a $next_tagnumber -m "backup on $(date) $msg"
+echo backup completed, see the git repo at $saveDir| tee -a $logfile
+remote=false
+# should we push now?
+if [ $push == false ]; then
+	# no, tell user to do it
+	echo "because you didn't request push"
+	echo recommended you "git push --tags" from this folder \($saveDir\) to backup your repo on github | tee -a $logfile
+	echo see "https://github.com/new"
+	echo to learn how to create a repo on github and the commands to sync your local system to the github repo
+else
+	# yes push
+	cd $saveDir
+	# did they specify the repo
+	if [ "$reponame."  != "." ]; then
+		remote=true
+		# no, is it set already?
+		repo=$(git remote -v 2>/dev/null| grep fetch -m1 | awk '{ print $2}')
+		# no, need to prompt for repo name
+		if [ "$repo."  == "." ]; then
+			# remote not set yet
+			#  name not specified
+			# need to prompt
+			# repo
+			# if we had their userid, we could get the list of repos to pick from
+			git remote add origin "https://github.com/$user_name/$reponame.git"
+			git branch -M main
+			repo=$(git remote -v| grep fetch -m1 | awk '{ print $2}')
+		fi
+		#	git remote add origin https://github.com/$user_name/$reponame.git
+		#	git branch -M main
+		#fi
+		git push -u origin main refs/tags/$next_tagnumber >>$logfile
+	fi
+
+fi
+echo see this link for how to fetch tags for restore
+echo https://devconnected.com/how-to-list-git-tags/
+echo or run the list_tags.sh command from this repo
+
+cd - >/dev/null
+
+date +"backup ended  - %a %b %e %H:%M:%S %Z %Y" >>$logfile

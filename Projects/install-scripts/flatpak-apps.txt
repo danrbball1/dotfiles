@@ -12,6 +12,7 @@ dev.geopjr.Calligraphy
 io.github.flattool.Ignition
 io.github.flattool.Warehouse
 io.github.giantpinkrobots.flatsweep
+com.makemkv.MakeMKV
 io.github.kolunmi.Bazaar
 io.github.peazip.PeaZip
 md.obsidian.Obsidian
