@@ -11,7 +11,11 @@ osc52 = "CopyPaste"
 normal = { family = "SFMono Nerd Font Mono" }
 bold = { family = "SFMono Nerd Font Mono" }
 italic = { family = "SFMono Nerd Font Mono" }
-size = 12 
+{{ if eq .chezmoi.hostname "xps13"}}
+size = 10 
+{{ else }}
+size = 14
+{{ end }}
 
 [window]
 padding.x = 14
