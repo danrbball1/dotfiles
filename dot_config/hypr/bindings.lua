@@ -73,6 +73,8 @@ hl.bind(
 	})
 )
 
+hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
+
 -- o.bind("SUPER + N", "Cycle Forward", hl.dsp.layout("cyclenext"))
 -- o.bind("SUPER + B", "Cyble Backward", hl.dsp.layout("cycleprev"))
 
