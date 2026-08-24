@@ -1,5 +1,6 @@
-# If not running interactively, don't do anything (leave this at the top of this file)
-[[ $- != *i* ]] && return
+#  Omarchy environment (OMARCHY_PATH + PATH), needed even for non-interactive shells
+[[ -r /usr/share/omarchy/default/bash/env-bootstrap ]] && source /usr/share/omarchy/default/bash/env-bootstrap
+ 
 # If not running interactively, don't do anything (leave this at the top of this file)
 [[ $- != *i* ]] && return
 
@@ -14,22 +15,21 @@
 
 # All the default Omarchy aliases and functions
 # (don't mess with these directly, just overwrite them here!)
-source ~/.local/share/omarchy/default/bash/rc
-source ~/.config/scripts
+source "$OMARCHY_PATH/default/bash/rc"
 
 # Load shared shell configuration (bash fallback when zsh is unavailable)
 #[[ -f /usr/share/omarchy-zsh/shell/all ]] && source /usr/share/omarchy-zsh/shell/all
-
+#
+# Load Scripts
+source ~/.config/scripts
 # Add your own exports, aliases, and functions below.
 
-#
 # Make an alias for invoking commands you use constantly
-# alias p='python'
+source $HOME/.config/aliases
 alias c='chezmoi'
 alias ca='chezmoi add'
 alias ce='chezmoi edit'
 alias cap='chezmoi apply'
 
 
-source $HOME/.config/aliases
 source $HOME/.config/broot/launcher/bash/br
