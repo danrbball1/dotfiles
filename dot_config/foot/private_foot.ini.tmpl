@@ -1,7 +1,13 @@
 [main]
 include=~/.local/state/omarchy/current/theme/foot.ini
 term=xterm-256color
+
+{{ if eq .chezmoi.hostname "xps13" }}
 font=SFMono Nerd Font Mono:size=12
+{{ else }}
+font=SFMono Nerd Font Mono:size=13
+{{ end }}
+
 pad=14x14
 initial-window-mode=windowed
 workers=0
