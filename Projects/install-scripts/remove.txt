@@ -1,12 +1,5 @@
 1password-beta
 1password-cli
-clang
-claude-code
-cliamp
-cups
 signal-desktop
-snapper
 spotify
-
-
 typora

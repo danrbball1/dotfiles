@@ -198,7 +198,7 @@ map ch chmod
 map dd trash
 map e
 map ee editor-open
-map gc cd ~/.config
+map gc cd ~/.local/share/chezmoi/
 map gdd cd ~/Documents
 map gdl cd ~/Downloads
 map gh cd
