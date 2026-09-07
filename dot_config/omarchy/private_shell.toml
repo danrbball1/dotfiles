@@ -1,0 +1,9 @@
+# Resize QuickShell
+# https://github.com/omacom/omarchy/discussions/7148
+
+[font]
+base-size = 15
+
+[bar]
+scale-with-font = false
+size-horizontal = 36
