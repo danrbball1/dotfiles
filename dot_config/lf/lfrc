@@ -1,13 +1,13 @@
-set shellopts '-ic'
+#set shellopts '-ic'
+set shellopts '-c'
 set autoquit
 set drawbox
-set hidden
+set nonumber
+set nohidden
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set icons
 set ifs ""
 set ignorecase
-set nohidden
-set nonumber
 set period 1
 set preview
 set ratios "1:1:2"
@@ -54,7 +54,7 @@ cmd chmod ${{
 
   for file in "$fx"
   do
-    chmod $ans $file
+    chmod -- "$ans" "$file"
   done
 
   lf -remote 'send reload'
@@ -101,7 +101,7 @@ cmd fzf_jump ${{
 cmd mkdir ${{
   printf "Directory Name: "
   read DIR
-  mkdir $DIR
+  mkdir -- "$DIR"
 }}
 
 cmd mkfile ${{

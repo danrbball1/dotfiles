@@ -92,3 +92,7 @@ o.bind(
 -- Launch Terminal
 hl.unbind("SUPER + SHIFT + Return")
 o.bind("SUPER + SHIFT + RETURN", "Launch Thunar", hl.dsp.exec_cmd("uwsm-app -- thunar"))
+
+-- Laaucn Brave
+hl.unbind("SUPER + W")
+o.bind("SUPER + W", "Launch Brave", hl.dsp.exec_cmd("uwsm-app -- brave"))
