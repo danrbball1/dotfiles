@@ -170,16 +170,20 @@ dunst                               # suckless notification system
 fwupd                               # firmware update manager
 gparted                             # parition magic clone
 maim                                # can take quick screenshots at your request
+nwg-displays
+nwg-look
 parted
 pamixer                             # command-line audio interface
 solaar                              # linux device manager for Logitech devices
 ufw                                 # uncomplicated firewall
+waybar
 yad
 zathura
 
 # Fonts
 font-manager
 awesome-terminal-fonts
+nerd-fonts-sf-mono
 # nerd-fonts-source-code-pro          # Source Code Pro Fonts
 noto-fonts                          # google noto TTF fonts
 noto-fonts-emoji                    # emoji font
