@@ -6,6 +6,7 @@ audacity                            # Program that lets you manipulate digital a
 gthumb                              # Image browser and viewer
 handbrake                           # video transcoder
 kdenlive                            # Non-linear video editor
+rawmakase-bin
 vlc                                 # Cross-platform multipmedia player and framework
 
 # browsers

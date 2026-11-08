@@ -1,25 +1,43 @@
-# Omarchy Plugins
+#Omarchy Plugins
 
 ## Installed Plugins
-1. omaplug
-2. omarchy-notification-center
-3. shell-font
-4. spaces
+1. Plugin Manager (omaplug)
+2. Notification Center (omarchy-notification-center)
+3. Omacast ()
+3. Shell Font
+4. Spaces
 
-## [omaplug](https://github.com/fross100/omaplug)
+## [Plugin Manager (omaplug)](https://github.com/fross100/omaplug)
 Standalone Omarchy plugin manager: enable/disable, update, install, and remove plugins
 
 *Install*:
 `omarchy plugin add https://github.com/fross100/omaplug --enable`
 
 
-## [omarchy-notification-center](https://github.com/jankeesvw/omarchy-notification-center)
+## [Notification Center - omarchy-notification-center](https://github.com/jankeesvw/omarchy-notification-center)
 An Omarchy bar widget that keeps the notifications you were sent. A bell on the right of the bar, a dot on it when something has come in, and a panel of everything you were told, still there tomorrow.
 
 *Install*:
 `omarchy plugin add https://github.com/jankeesvw/omarchy-notification-center.git --enable`
 
-## shell font
+## [Omacast](https://github.com/typecraft-dev/oma-cast)
+
+A Raycast-esque launcher for Omarchy. It learns what you use, searches your apps and every Omarchy action, and looks like it shipped with your theme.
+
+```
+omarchy plugin add https://github.com/typecraft-dev/oma-cast --enable
+~/.config/omarchy/plugins/typecraft.omacast/bin/omacast install   # link the omacast CLI into ~/.local/bin
+omacast setup hyprland                                              # bind Alt+Space
+omacast doctor                                                      # check everything is wired up
+```
+
+## [Omarchy Universal Font Sizer](https://github.com/ukkit/omarchy-universal-font-sizer/)
+
+Scroll the Omarchy bar to resize shell, GTK, and terminal text on the fly. Click for a slider, live preview, and reset.
+
+`omarchy plugin add https://github.com/ukkit/omarchy-universal-font-sizer --enable`
+
+## [Shell Font](https://github.com/skuthus/omarchy-shell-font)
 Pick the font family and weight used by the Omarchy Quickshell bar and shell UI.
 
 *Install*:
@@ -39,7 +57,7 @@ omarchy restart shell
 ```
 
 
-## [spaces](https://github.com/tornikegomareli/omarchy-spaces)
+## [Spaces](https://github.com/tornikegomareli/omarchy-spaces)
 See what runs on every workspace. An Omarchy bar widget that shows the apps open on each workspace.
 
 *Install*:

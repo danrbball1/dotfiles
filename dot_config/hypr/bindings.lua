@@ -35,6 +35,7 @@
 -- Terminal Mappings
 hl.unbind("SUPER + RETURN")
 o.bind("SUPER + RETURN", "Launch Terminal", hl.dsp.exec_cmd("uwsm-app -- alacritty"))
+o.bind("SUPER + R", "Launch Omacast", hl.dsp.exec_cmd("uwsm-app -- omacast toggle"))
 
 -- Customkeybinding
 local function layout_bind(bind_table)
