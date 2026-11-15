@@ -1,21 +1,22 @@
-com.rafaelmardojai.Blanket
 io.github.kolunmi.Bazaar
-io.github.dvlv.boxbuddyrs
-io.github.maniacx.BudsLink
+com.rafaelmardojai.Blanket
 com.usebottles.bottles
+io.github.dvlv.boxbuddyrs
 org.gnome.Boxes
+io.github.maniacx.BudsLink
 org.gnome.baobab
 dev.geopjr.Calligraphy
+com.collaboraoffice.Office
 com.github.qarmin.czkawka
+com.github.tchx84.Flatseal
 io.github.giantpinkrobots.flatsweep
 org.kde.ghostwriter
 org.gimp.GIMP
 org.onlyoffice.desktopeditors
-com.github.tchx84.Flatseal
 io.github.flattool.Ignition
 no.mifi.losslesscut
+com.google.Chrome
 net.lutris.Lutris
-com.makemkv.MakeMKV
 io.missioncenter.MissionCenter
 org.mixxx.Mixxx
 md.obsidian.Obsidian
@@ -24,8 +25,11 @@ com.github.jeromerobert.pdfarranger
 io.github.peazip.PeaZip
 org.gnome.World.PikaBackup
 org.remmina.Remmina
-com.valvesoftware.Steam
+org.gnome.Shotwell
 com.obsproject.Studio
 com.transmissionbt.Transmission
 io.github.flattool.Warehouse
 app.zen_browser.zen
+
+# Uninstalled 
+# com.valvesoftware.Steam
