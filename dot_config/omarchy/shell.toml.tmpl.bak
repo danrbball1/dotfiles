@@ -1,0 +1,5 @@
+{{ if eq .chezmoi.hostname "xps13" }}
+[font]
+base-size = 13
+{{ else }}
+{{ end }}
